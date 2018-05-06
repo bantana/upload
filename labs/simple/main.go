@@ -1,10 +1,13 @@
+// curl -F "data=@./testfile/test1.txt" http://localhost:3000/upload
 package main
 
 import (
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	// "io"
-	// "io/ioutil"
+
 	// "log"
 	// "net/http"
 	// "mime"
@@ -35,6 +38,23 @@ func main() {
 	log.Printf("tips: access path: %s", myserver.URL)
 
 	mux.ServeFiles("/file/*filepath", http.Dir(myserver.Dir))
+	mux.POST("/upload", uploadHandle)
 
 	log.Fatal(http.ListenAndServe(myserver.Port, mux))
+}
+
+func uploadHandle(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	file, header, err := r.FormFile("data")
+	if err != nil {
+		log.Println(err)
+	}
+	// c, err := ioutil.ReadAll(file)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	fmt.Fprintf(w, "upload files Header: %v!\n", header)
+	_, err = io.Copy(w, file)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

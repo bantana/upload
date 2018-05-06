@@ -1,0 +1,2 @@
+test1.txt
+upload files Header: &{test1.txt map[Content-Type:[text/plain] Content-Disposition:[form-data; name="data"; filename="test1.txt"]] 10 [116 101 115 116 49 46 116 120 116 10] }!
