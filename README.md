@@ -26,7 +26,7 @@ POST	/upload/presigned	(OK, err)
 
 design:
 
-- 一个image type corvert 接口.
+- 一个image type convert 接口.
 - 一个image resize 接口.
 
 ## 其他相关信息收集
@@ -75,6 +75,7 @@ nokiatech C++ 实现:
 - http://jpgtoheif.com
 
 - https://github.com/kometen/http_post/blob/master/heif.go use ffmpeg
+-
 
 ## thinking
 
@@ -136,5 +137,43 @@ DecodeConfig(r io.Reader) (image.Config, error) {
   _, c, err := decode(r, true)
     return c, err
 }
+```
 
+examples:
+
+```golang
+// example
+import (
+ "image/jpeg"
+ "image/png"
+ "io"
+)
+
+// convertJPEGToPNG converts from JPEG to PNG.
+func convertJPEGToPNG(w io.Writer, r io.Reader) error {
+ img, err := jpeg.Decode(r)
+ if err != nil {
+  return err
+ }
+ return png.Encode(w, img)
+}
+
+// example
+import (
+ "image"
+ "image/png"
+ "io"
+
+ _ "code.google.com/p/vp8-go/webp"
+ _ "image/jpeg"
+)
+
+// convertToPNG converts from any recognized format to PNG.
+func convertToPNG(w io.Writer, r io.Reader) error {
+ img, _, err := image.Decode(r)
+ if err != nil {
+  return err
+ }
+ return png.Encode(w, img)
+}
 ```
