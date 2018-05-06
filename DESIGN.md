@@ -1,33 +1,75 @@
 # 文件上传服务
 
+图片使用场景:
+
+  // todo
+
 ## Design Goal
 
 - support upload file with: standard single，multipart, pre-signed.
 - images support watermark
 - upload maxsize limit.
-- images support multi type translate.
+- images support multi type convert.
 - images support multi resize.
-- images support access autoresize.
+- images support access auto resize.
 - support s3 Object store version 4。
 - support local mount (cluster storage) fileSystem ?
 
+## 需求分析
+
+  设计需求变大了
+
+  重新划分成几个小的设计
+
+  1. upload 设计
+  2. http get access 设计
+  3. image convert 设计
+  4. image resize 设计
+  5. image waterMark 设计
+  6. image backend storage interface
+
+重新考虑的事:
+
+file 包含 image, audio, movie , ...
+  upload file  需要和image区分开来吗?
+
+  file 是可以有 mime 识别的.
+  file 是可以有 getMeta 设计的.
+  image 是可以有 convert 和 resize 设计的.
+  audio ?
+  video ?
+
+使用设计一:
+
+  1. upload file , with a msg register
+  2. use msg register detect file format and trigger defined actions(like image convert common ImageType)
+
+使用设计二:
+
+  1. upload file
+  2. access file with define action.(like convert or resize, etc...)
+
 ## 设计
 
-图片使用场景:
 
-  // todo
+REST API
 
+POST	/upload/standard	({$UUID}, {$MIME}, err)
 
-REST API:
+POST	/upload/multipart	({$UUID}, {$MIME}, err)
+// all files with json( []{"file1", "$uuidFiel1", "$mimeFile1", err} )
 
-POST	/upload/standard	(OK, err)
-POST	/upload/multipart	(OK, err)
-POST	/upload/presigned	(OK, err)
+POST	/upload/presigned	({$UUID}, {$MIME}, err)
 
-design:
+GET   /image/{$UUID}/{$ImageType}/{$SIZE} ([]byte or err) // ImageType is [png|gif|heif|webp|...]
 
-- 一个image type convert 接口.
-- 一个image resize 接口.
+GET   /file/{$UUID}
+
+design thinking:
+
+- 一个 image type convert 接口.
+- 一个 image resize 接口.
+- 一个 backend storage 接口.
 
 ## 其他相关信息收集
 
@@ -36,6 +78,8 @@ design:
   解析度。同时声称尺寸比 jpeg 小50%.
 - 已知情况，.heic 通过ios分享出去到特定的服务接口的时候会自动转换为jpeg。
 - 将图片通过google photo, dropbox等上传的时候是.heic文件。
+
+# TL;DR
 
 - webp格式 vp8
 
