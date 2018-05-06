@@ -14,6 +14,10 @@
 - images support access auto resize.
 - support s3 Object store version 4。
 - support local mount (cluster storage) fileSystem ?
+- OneShot : Files are destructed after the first download
+- Removable : Give the ability to the uploader to remove files at any time
+- TTL : Custom expiration date
+- Password : Protect upload with login/password (Auth Basic)
 
 ## 需求分析
 
@@ -26,7 +30,9 @@
   3. image convert 设计
   4. image resize 设计
   5. image waterMark 设计
-  6. image backend storage interface
+  6. multiple backend storage interface
+  7. multiple metadata backends: Bolt, badger,...
+
 
 重新考虑的事:
 
