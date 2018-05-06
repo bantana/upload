@@ -30,14 +30,13 @@
 
 重新考虑的事:
 
-file 包含 image, audio, movie , ...
-  upload file  需要和image区分开来吗?
-
-  file 是可以有 mime 识别的.
-  file 是可以有 getMeta 设计的.
-  image 是可以有 convert 和 resize 设计的.
-  audio ?
-  video ?
+- file 包含 image, audio, movie , ...
+- upload file  需要和image区分开来吗?
+- file 是可以有 mime 识别的.
+- file 是可以有 getMeta 设计的.
+- image 是可以有 convert 和 resize 设计的.
+- audio ?
+- video ?
 
 使用设计一:
 
