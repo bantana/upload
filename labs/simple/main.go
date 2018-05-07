@@ -13,6 +13,8 @@ import (
 	// "mime"
 	// "mime/multipart"
 	"github.com/julienschmidt/httprouter"
+	"github.com/meatballhat/negroni-logrus"
+	"github.com/urfave/negroni"
 )
 
 //  fileServer define Upload file director and Port
@@ -32,15 +34,18 @@ func main() {
 		URL:  "/file",
 	}
 
-	// fmt.Println("starting server")
-	log.Println("something run tips here!")
+	// log.Println("something run tips here!")
 	log.Printf("tips: staring server at port: %s use local dir: %s,", myserver.Port, myserver.Dir)
 	log.Printf("tips: access path: %s", myserver.URL)
 
 	mux.ServeFiles("/file/*filepath", http.Dir(myserver.Dir))
 	mux.POST("/upload", uploadHandle)
 
-	log.Fatal(http.ListenAndServe(myserver.Port, mux))
+	n := negroni.New()
+	n.Use(negronilogrus.NewMiddleware())
+	n.UseHandler(mux)
+	n.Run(myserver.Port)
+	// log.Fatal(http.ListenAndServe(myserver.Port, mux))
 }
 
 func uploadHandle(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
