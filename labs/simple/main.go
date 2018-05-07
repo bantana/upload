@@ -6,12 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
-	// "io"
 
-	// "log"
-	// "net/http"
-	// "mime"
-	// "mime/multipart"
 	"github.com/julienschmidt/httprouter"
 	"github.com/meatballhat/negroni-logrus"
 	"github.com/urfave/negroni"
