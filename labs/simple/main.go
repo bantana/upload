@@ -48,10 +48,6 @@ func uploadHandle(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	if err != nil {
 		log.Println(err)
 	}
-	// c, err := ioutil.ReadAll(file)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
 	fmt.Fprintf(w, "upload files Header: %v!\n", header)
 	_, err = io.Copy(w, file)
 	if err != nil {
